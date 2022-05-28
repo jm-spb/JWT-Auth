@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
 import tokenModel from '../models/token-model.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class TokenService {
   createTokens(payload) {
@@ -23,6 +26,34 @@ class TokenService {
     }
     const token = await tokenModel.create({ user: userId, refreshToken });
     return token;
+  }
+
+  async removeToken(refreshToken) {
+    await tokenModel.deleteOne({ refreshToken });
+    return;
+  }
+
+  async validateAccessToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_ACCESS_KEY);
+      return userData;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async validateRefreshToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_REFRESH_KEY);
+      return userData;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async findToken(refreshToken) {
+    const tokenData = await tokenModel.findOne({ refreshToken });
+    return tokenData;
   }
 }
 
