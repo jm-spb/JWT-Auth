@@ -1,8 +1,6 @@
-import jwt from 'jsonwebtoken';
-import tokenModel from '../models/token-model.js';
-import dotenv from 'dotenv';
-
-dotenv.config();
+const jwt = require('jsonwebtoken');
+const tokenModel = require('../models/token-model.js');
+require('dotenv').config();
 
 class TokenService {
   createTokens(payload) {
@@ -57,4 +55,4 @@ class TokenService {
   }
 }
 
-export default new TokenService();
+module.exports = new TokenService();

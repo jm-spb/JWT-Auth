@@ -1,7 +1,5 @@
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
-
-dotenv.config();
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 class MailService {
   constructor() {
@@ -11,26 +9,25 @@ class MailService {
       secure: false,
       auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
-    })
+        pass: process.env.SMTP_PASS,
+      },
+    });
   }
 
   async sendActivationMail(to, link) {
     await this.transporter.sendMail({
       from: process.env.SMTP_USER,
       to,
-      subject: "Account activation on " + process.env.API_URL,
+      subject: 'Account activation on ' + process.env.API_URL,
       text: '',
-      html: 
-      `
+      html: `
         <div>
           <h1>For activation go to</h1>
           <a href="${link}">${link}</a>
         </div>
-      `
-    })
+      `,
+    });
   }
 }
 
-export default new MailService();
+module.exports = new MailService();

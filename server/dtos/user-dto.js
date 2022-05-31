@@ -1,4 +1,4 @@
-export default class UserDto {
+module.exports = class UserDto {
   email;
   id;
   isActivated;

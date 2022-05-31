@@ -1,9 +1,7 @@
-import userService from '../service/user-service.js';
-import dotenv from 'dotenv';
-import { validationResult } from 'express-validator';
-import ApiError from '../errors/api-error.js';
-
-dotenv.config();
+const { validationResult } = require('express-validator');
+require('dotenv').config();
+const userService = require('../service/user-service.js');
+const ApiError = require('../errors/api-error.js');
 
 class UserController {
   async registration(req, res, next) {
@@ -64,6 +62,7 @@ class UserController {
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
+      console.log(refreshToken);
       const userData = await userService.refresh(refreshToken);
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 2592000000,
@@ -76,4 +75,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+module.exports = new UserController();

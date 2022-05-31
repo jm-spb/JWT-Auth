@@ -1,10 +1,10 @@
-import bcrypt from 'bcrypt';
-import { v4 as uuid } from 'uuid';
-import mailService from './mail-service.js';
-import UserDto from '../dtos/user-dto.js';
-import tokenService from './token-service.js';
-import userModel from '../models/user-model.js';
-import ApiError from '../errors/api-error.js';
+const bcrypt = require('bcrypt');
+const uuid = require('uuid').v4;
+const mailService = require('./mail-service.js');
+const UserDto = require('../dtos/user-dto.js');
+const tokenService = require('./token-service.js');
+const userModel = require('../models/user-model.js');
+const ApiError = require('../errors/api-error.js');
 
 class UserService {
   async registration(email, password) {
@@ -75,10 +75,13 @@ class UserService {
       throw ApiError.UnauthorizedError();
     }
 
-    const userData = tokenService.validateRefreshToken(refreshToken);
-    const tokenFromDB = tokenService.findToken(refreshToken);
+    const userData = await tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDB = await tokenService.findToken(refreshToken);
+    // console.log(userData)
+    console.log(tokenFromDB);
 
     if (!userData || !tokenFromDB) {
+      console.log('!refreshToken');
       throw ApiError.UnauthorizedError();
     }
 
@@ -94,4 +97,4 @@ class UserService {
   }
 }
 
-export default new UserService();
+module.exports = new UserService();
