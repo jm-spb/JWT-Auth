@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const tokenModel = require('../models/token-model.js');
-require('dotenv').config();
 
 const createTokens = (payload) => {
   const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY, {

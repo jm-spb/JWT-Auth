@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const uuid = require('uuid').v4;
 const sendActivationMail = require('./mail-service.js');
-const UserDto = require('../dtos/user-dto.js');
 const {
   createTokens,
   findToken,
@@ -17,6 +16,7 @@ const registration = async (email, password) => {
   if (foundUser) {
     throw ApiError.BadRequset(`User with email: ${email} is already exist`);
   }
+  
   const hashPassword = bcrypt.hashSync(password, 5);
   const activationLink = uuid();
   const newUser = await userModel.create({
@@ -29,13 +29,13 @@ const registration = async (email, password) => {
     email,
     `${process.env.API_URL}/api/activate/${activationLink}`,
   );
-  const userDto = new UserDto(newUser); // id, email, isActivated
-  const tokens = createTokens({ ...userDto });
-  await saveToken(userDto.id, tokens.refreshToken);
+  const { _id: id, email: userEmail, isActivated } = newUser;
+  const tokens = createTokens({ id, userEmail, isActivated });
+  await saveToken(id, tokens.refreshToken);
 
   return {
     ...tokens,
-    user: userDto,
+    user: { id, userEmail, isActivated },
   };
 };
 
@@ -55,18 +55,18 @@ const login = async (email, password) => {
     throw ApiError.BadRequset(`User with email: ${email} is not found`);
   }
 
-  const isPassEquals = await bcrypt.compare(password, foundUser.password);
-  if (!isPassEquals) {
+  const isMatch = await bcrypt.compare(password, foundUser.password);
+  if (!isMatch) {
     throw ApiError.BadRequset('Wrong Password');
   }
 
-  const userDto = new UserDto(foundUser);
-  const tokens = createTokens({ ...userDto });
-  await saveToken(userDto.id, tokens.refreshToken);
+  const { _id: id, email: userEmail, isActivated } = foundUser;
+  const tokens = createTokens({ id, userEmail, isActivated });
+  await saveToken(id, tokens.refreshToken);
 
   return {
     ...tokens,
-    user: userDto,
+    user: { id, userEmail, isActivated },
   };
 };
 
@@ -84,18 +84,17 @@ const refresh = async (refreshToken) => {
   const tokenFromDB = await findToken(refreshToken);
 
   if (!userData || !tokenFromDB) {
-    console.log('!refreshToken');
     throw ApiError.UnauthorizedError();
   }
 
-  const user = await userModel.findById(userData.id);
-  const userDto = new UserDto(user);
-  const tokens = createTokens({ ...userDto });
-  await saveToken(userDto.id, tokens.refreshToken);
+  const foundUser = await userModel.findById(userData.id);
+  const { _id: id, email: userEmail, isActivated } = foundUser;
+  const tokens = createTokens({ id, userEmail, isActivated });
+  await saveToken(id, tokens.refreshToken);
 
   return {
     ...tokens,
-    user: userDto,
+    user: { id, userEmail, isActivated },
   };
 };
 
