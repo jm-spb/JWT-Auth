@@ -1,0 +1,9 @@
+@import './config';
+
+.App {
+  height: 100vh;
+  background-color: $theme-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

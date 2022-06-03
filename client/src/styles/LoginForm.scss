@@ -1,0 +1,107 @@
+@import './config';
+
+.container {
+  width: 300px;
+  background-color: $main-color;
+  padding: 24px;
+  border-radius: 4px;
+
+  &__heading {
+    font-weight: 400;
+    color: white;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $secondary-color;
+  }
+
+  &__api-error {
+    display: block;
+    line-height: 1.5;
+    color: $warning-color;
+
+    &::before {
+      display: inline;
+      content: '⚠ ';
+    }
+  }
+
+  &__signup {
+    margin-top: 30px;
+  }
+}
+
+.form {
+  width: 100%;
+
+  &__label {
+    line-height: 2;
+    text-align: left;
+    display: block;
+    margin-bottom: 13px;
+    margin-top: 20px;
+    color: white;
+    font-size: 14px;
+    font-weight: 200;
+  }
+
+  &__input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid white;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  &__error {
+    color: $warning-color;
+
+    &::before {
+      display: inline;
+      content: '⚠ ';
+    }
+  }
+
+  &__submit {
+    margin: 40px auto 0 auto;
+    width: 100%;
+    background: $secondary-color;
+    color: white;
+    text-transform: uppercase;
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 4px;
+
+    &:hover {
+      background-color: rgba($color: $secondary-color, $alpha: 0.7);
+      cursor: pointer;
+    }
+
+    &:active {
+      transition: 0.3s all;
+      transform: translateY(3px);
+      border: 1px solid transparent;
+      opacity: 0.8;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+}
+
+.signup {
+  display: block;
+  color: white;
+  text-align: center;
+
+  &__link {
+    margin-left: 4px;
+    color: $link-color;
+  }
+}
