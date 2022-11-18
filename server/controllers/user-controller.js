@@ -1,9 +1,8 @@
 const { validationResult } = require('express-validator');
-require('dotenv').config();
 const userService = require('../service/user-service.js');
 const ApiError = require('../errors/api-error.js');
 
-const userRegistration = async (req, res, next) => {
+const registration = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -13,7 +12,7 @@ const userRegistration = async (req, res, next) => {
     const { email, password } = req.body;
     const userData = await userService.registration(email, password);
     res.cookie('refreshToken', userData.refreshToken, {
-      maxAge: 2592000000,
+      maxAge: 2592000000, // 30 days
       httpOnly: true,
     });
 
@@ -23,7 +22,7 @@ const userRegistration = async (req, res, next) => {
   }
 };
 
-const userActivate = async (req, res, next) => {
+const activate = async (req, res, next) => {
   try {
     const activationLink = req.params.link;
     await userService.activate(activationLink);
@@ -33,10 +32,9 @@ const userActivate = async (req, res, next) => {
   }
 };
 
-const userRefresh = async (req, res, next) => {
+const refresh = async (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
-    console.log(refreshToken);
     const userData = await userService.refresh(refreshToken);
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 2592000000,
@@ -48,7 +46,7 @@ const userRefresh = async (req, res, next) => {
   }
 };
 
-const userLogin = async (req, res, next) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const userData = await userService.login(email, password);
@@ -62,7 +60,7 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-const userLogout = async (req, res, next) => {
+const logout = async (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
     await userService.logout(refreshToken);
@@ -74,9 +72,9 @@ const userLogout = async (req, res, next) => {
 };
 
 module.exports = {
-  userRegistration,
-  userActivate,
-  userRefresh,
-  userLogin,
-  userLogout,
+  registration,
+  activate,
+  refresh,
+  login,
+  logout,
 };
