@@ -1,13 +1,16 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import '../styles/LoginForm.scss';
 import { Context } from '..';
-import { IFormInputs } from '../types';
+import { IFormInputs, ILocation } from '../types';
 
 const LoginForm = (): JSX.Element => {
   const { store } = React.useContext(Context);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { path } = location.state as ILocation;
 
   const {
     register,
@@ -24,7 +27,11 @@ const LoginForm = (): JSX.Element => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit = ({ email, password }: IFormInputs) => store.login(email, password);
+  const onSubmit = async ({ email, password }: IFormInputs) => {
+    await store.login(email, password);
+    navigate(path || '/');
+  };
+
   const apiErrorMsg = store.apiError ? (
     <div className="container__api-error">{store.apiError}</div>
   ) : null;
