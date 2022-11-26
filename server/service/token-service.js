@@ -3,10 +3,10 @@ const tokenModel = require('../models/token-model.js');
 
 const createTokens = (payload) => {
   const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY, {
-    expiresIn: '30m',
+    expiresIn: '10s',
   });
   const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_KEY, {
-    expiresIn: '30d',
+    expiresIn: '30s',
   });
   return {
     accessToken,
@@ -29,7 +29,7 @@ const removeToken = async (refreshToken) => {
   return;
 };
 
-const validateAccessToken = async (token) => {
+const validateAccessToken = (token) => {
   try {
     const userData = jwt.verify(token, process.env.JWT_ACCESS_KEY);
     return userData;
@@ -38,7 +38,7 @@ const validateAccessToken = async (token) => {
   }
 };
 
-const validateRefreshToken = async (token) => {
+const validateRefreshToken = (token) => {
   try {
     const userData = jwt.verify(token, process.env.JWT_REFRESH_KEY);
     return userData;
