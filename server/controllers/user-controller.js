@@ -71,10 +71,20 @@ const logout = async (req, res, next) => {
   }
 };
 
+const fetchUsers = async (req, res, next) => {
+  try {
+    const fetchedUsers = await userService.fetchAllUsers();
+    return res.json(fetchedUsers);
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   registration,
   activate,
   refresh,
   login,
   logout,
+  fetchUsers,
 };

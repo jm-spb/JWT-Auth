@@ -16,7 +16,7 @@ const registration = async (email, password) => {
   if (foundUser) {
     throw ApiError.BadRequset(`User with email: ${email} is already exist`);
   }
-  
+
   const hashPassword = bcrypt.hashSync(password, 5);
   const activationLink = uuid();
   const newUser = await userModel.create({
@@ -27,7 +27,7 @@ const registration = async (email, password) => {
 
   await sendActivationMail(
     email,
-    `${process.env.API_URL}/api/activate/${activationLink}`,
+    `${process.env.API_URL}/api/activate/${activationLink}`
   );
   const { _id: id, email: userEmail, isActivated } = newUser;
   const tokens = createTokens({ id, userEmail, isActivated });
@@ -98,10 +98,13 @@ const refresh = async (refreshToken) => {
   };
 };
 
+const fetchAllUsers = async () => await userModel.find();
+
 module.exports = {
   registration,
   activate,
   login,
   logout,
   refresh,
+  fetchAllUsers,
 };
