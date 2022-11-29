@@ -80,7 +80,7 @@ const refresh = async (refreshToken) => {
     throw ApiError.UnauthorizedError();
   }
 
-  const userData = await validateRefreshToken(refreshToken);
+  const userData = validateRefreshToken(refreshToken);
   const tokenFromDB = await findToken(refreshToken);
 
   if (!userData || !tokenFromDB) {
@@ -98,7 +98,13 @@ const refresh = async (refreshToken) => {
   };
 };
 
-const fetchAllUsers = async () => await userModel.find();
+const fetchAllUsers = async () => {
+  const response = await userModel.aggregate([
+    { $group: { _id: '$_id', userEmail: { $first: '$email' } } },
+  ]);
+  console.log(response);
+  return response;
+};
 
 module.exports = {
   registration,
