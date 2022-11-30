@@ -13,8 +13,17 @@ export interface IAuthResponse {
 export interface IFormInputs {
   email: string;
   password: string;
+  passwordConfirm: string;
 }
 
 export interface ILocation {
-  path: string;
+  state: {path: string};
+}
+
+export interface IFormProps {
+  formName: string;
+  apiErrorMsg: JSX.Element | null;
+  onSubmit: ({ email, password }: IFormInputs) => Promise<void>;
+  signUpSuggestion?: JSX.Element;
+  registerPage? : boolean;
 }
