@@ -8,9 +8,11 @@ const Form = ({
   apiErrorMsg,
   onSubmit,
   signUpSuggestion,
+  registerPage,
 }: IFormProps): JSX.Element => {
   const {
     register,
+    watch,
     formState: { errors, isValid, isSubmitSuccessful },
     handleSubmit,
     reset,
@@ -23,6 +25,9 @@ const Form = ({
       reset();
     }
   }, [isSubmitSuccessful, reset]);
+
+  const password = React.useRef({});
+  password.current = watch('password', '');
 
   return (
     <article className="container">
@@ -58,7 +63,8 @@ const Form = ({
               - 1 capital letter
               - 1 special character
               - length: 6-10 characters
-              - order not important              
+              - order not important
+              1A2a$5              
               */
               minLength: {
                 value: 6,
@@ -72,7 +78,7 @@ const Form = ({
                 value:
                   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/gm,
                 message:
-                  'Password must have at least: one number, one letter, one capital letter, one special character',
+                  'Password must have at least: one number, letter, capital letter, special character',
               },
             })}
             className="form__input"
@@ -86,6 +92,30 @@ const Form = ({
         ) : (
           <span className="form__empty" />
         )}
+
+        {registerPage ? (
+          <>
+            <label className="form__label" htmlFor="passwordConfirm">
+              Confirm password
+              <input
+                {...register('passwordConfirm', {
+                  required: 'Password field is empty',
+                  validate: (value) =>
+                    value === password.current || 'The passwords do not match',
+                })}
+                className="form__input"
+                id="passwordConfirm"
+                type="password"
+                placeholder="Enter password"
+              />
+            </label>
+            {errors?.passwordConfirm ? (
+              <span className="form__error">{errors?.passwordConfirm.message}</span>
+            ) : (
+              <span className="form__empty" />
+            )}
+          </>
+        ) : null}
 
         <button className="btn form__submit" type="submit" disabled={!isValid}>
           {formName}
