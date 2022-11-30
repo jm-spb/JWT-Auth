@@ -1,21 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import '../styles/LoginForm.scss';
-import { IFormInputs } from '../types';
+import { IFormInputs, IFormProps } from '../types';
 
-interface ILoginForm {
-  formName: string;
-  apiErrorMsg: JSX.Element | null;
-  onSubmit: ({ email, password }: IFormInputs) => Promise<void>;
-  signUpSuggestion?: JSX.Element;
-}
-
-const LoginForm = ({
+const Form = ({
   formName,
   apiErrorMsg,
   onSubmit,
   signUpSuggestion,
-}: ILoginForm): JSX.Element => {
+}: IFormProps): JSX.Element => {
   const {
     register,
     formState: { errors, isValid, isSubmitSuccessful },
@@ -59,6 +52,28 @@ const LoginForm = ({
           <input
             {...register('password', {
               required: 'Password field is empty',
+              /* Password should contain at least: 
+              - 1 digit
+              - 1 small-case letter
+              - 1 capital letter
+              - 1 special character
+              - length: 6-10 characters
+              - order not important              
+              */
+              minLength: {
+                value: 6,
+                message: 'Password length should be more than 5 characters',
+              },
+              maxLength: {
+                value: 10,
+                message: 'Password length should be less than 11 characters',
+              },
+              pattern: {
+                value:
+                  /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/gm,
+                message:
+                  'Password must have at least: one number, one letter, one capital letter, one special character',
+              },
             })}
             className="form__input"
             id="password"
@@ -81,4 +96,4 @@ const LoginForm = ({
   );
 };
 
-export default LoginForm;
+export default Form;
