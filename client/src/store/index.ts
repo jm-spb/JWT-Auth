@@ -6,22 +6,28 @@ import { IAuthResponse, IUser } from '../types';
 export default class Store {
   user = {} as IUser;
   isAuth = false;
-  isLoading = true;
+  isLoading = false;
   apiError = '';
+  registrationError = '';
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  private _setAuth(bool: boolean) {
-    this.isAuth = bool;
-  }
   private _setUser(user: IUser) {
     this.user = user;
   }
 
+  private _setAuth(bool: boolean) {
+    this.isAuth = bool;
+  }
+
   private _setApiError(msg: string) {
     this.apiError = msg;
+  }
+
+  private _setRegistrationError(msg: string) {
+    this.registrationError = msg;
   }
 
   setIsLoading(bool: boolean) {
@@ -29,9 +35,9 @@ export default class Store {
   }
 
   async login(email: string, password: string) {
+    this.setIsLoading(true);
     try {
       const response = await AuthService.login(email, password);
-      console.log(response);
       localStorage.setItem('token', response.data.accessToken);
       this._setAuth(true);
       this._setUser(response.data.user);
@@ -40,19 +46,25 @@ export default class Store {
       this._setApiError(error.response?.data?.message);
       console.log(error.response?.data?.message);
     }
+    finally {
+      this.setIsLoading(false);
+    }
   }
 
   async registration(email: string, password: string) {
+    this.setIsLoading(true);
     try {
-      const response = await AuthService.registration(email, password);
-      console.log(response);
+      const response = await AuthService.registration(email, password);      
       localStorage.setItem('token', response.data.accessToken);
       this._setAuth(true);
       this._setUser(response.data.user);
     } catch (err) {
       const error = err as any;
-      this._setApiError(error.response?.data?.message);
+      this._setRegistrationError(error.response?.data?.message);
       console.log(error.response?.data?.message);
+    }
+    finally {
+      this.setIsLoading(false);
     }
   }
 
@@ -74,7 +86,7 @@ export default class Store {
     try {
       const response = await axios.get<IAuthResponse>(
         `${process.env.REACT_APP_API_URL}/api/refresh`,
-        { withCredentials: true },
+        { withCredentials: true }
       );
       localStorage.setItem('token', response.data.accessToken);
       this._setAuth(true);
@@ -85,6 +97,15 @@ export default class Store {
       console.log(error.response.data.message);
     } finally {
       this.setIsLoading(false);
+    }
+  }
+
+  async fetchUSers() {
+    try {
+    } catch (err) {
+      const error = err as any;
+      this._setApiError(error.response?.data?.message);
+      console.log(error.response.data.message);
     }
   }
 }
