@@ -11,16 +11,24 @@ const RegisterPage = (): JSX.Element => {
 
   const onSubmit = async ({ email, password }: IFormInputs) => {
     await store.registration(email, password);
-    // TODO: if registrationIsSuccess -> navigate
-    navigate('/account/login');
+    // if no errors on registration -> redirect to LoginPage
+    if (!store.registrationError) {
+      navigate('/account/login');
+    }
   };
 
-  const apiErrorMsg = store.apiError ? (
-    <div className="container__api-error">{store.apiError}</div>
+  const apiErrorMsg = store.registrationError ? (
+    <div className="container__api-error">{store.registrationError}</div>
   ) : null;
 
   return (
-    <Form formName="Sign Up" apiErrorMsg={apiErrorMsg} onSubmit={onSubmit} registerPage />
+    <Form
+      formName="Sign Up"
+      apiErrorMsg={apiErrorMsg}
+      onSubmit={onSubmit}
+      registerPage
+      isLoading={store.isLoading}
+    />
   );
 };
 
