@@ -19,14 +19,25 @@ const LoginPage = (): JSX.Element => {
   const navigate = useNavigate();
   const { state } = useLocation() as ILocation;
 
+  // Clear LoginErrorMessage when leave LoginPage
+  React.useEffect(() => {
+    return () => {
+      store.setLoginError('');
+    };
+  }, []);
+
   const onSubmit = async ({ email, password }: IFormInputs) => {
     await store.login(email, password);
-    navigate(state?.path || '/');
+    if (!store.loginError) {
+      navigate(state?.path || '/');
+    }
   };
 
-  const apiErrorMsg = store.apiError ? (
-    <div className="container__api-error">{store.apiError}</div>
-  ) : null;
+  const apiErrorMsg = store.loginError ? (
+    <div className="container__api-error">{store.loginError}</div>
+  ) : (
+    ''
+  );
 
   return (
     <Form
