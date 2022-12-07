@@ -34,11 +34,11 @@
   width: 100%;
 
   &__label {
+    position: relative;
     line-height: 2;
     text-align: left;
     display: block;
-    margin-bottom: 13px;
-    margin-top: 20px;
+    margin-top: 4px;
     color: white;
     font-size: 14px;
     font-weight: 200;
@@ -55,8 +55,20 @@
     font-size: 14px;
   }
 
+  &__togglePassword {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    height: 24px;
+    color: $theme-color;
+    cursor: pointer;
+  }
+
   &__error {
     color: $warning-color;
+    font-size: 12px;
+    display: block;
+    height: 20px;
 
     &::before {
       display: inline;
@@ -64,8 +76,13 @@
     }
   }
 
+  &__empty {
+    display: block;
+    height: 20px;
+  }
+
   &__submit {
-    margin: 40px auto 0 auto;
+    margin: 30px auto 0 auto;
     width: 100%;
     background: $secondary-color;
     color: white;
