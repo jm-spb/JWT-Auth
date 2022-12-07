@@ -5,7 +5,7 @@ import { Context } from '..';
 import Form from '../components/Form';
 import { IFormInputs, ILocation } from '../types';
 
-const signUpSuggestion = (
+const bottomNavigation = (
   <span className="container__signup signup">
     Don't have an account?{' '}
     <Link className="signup__link" to={'/account/register'}>
@@ -33,7 +33,8 @@ const LoginPage = (): JSX.Element => {
       formName="Login"
       apiErrorMsg={apiErrorMsg}
       onSubmit={onSubmit}
-      signUpSuggestion={signUpSuggestion}
+      bottomNavigation={bottomNavigation}
+      isLoading={store.isLoading}
     />
   );
 };

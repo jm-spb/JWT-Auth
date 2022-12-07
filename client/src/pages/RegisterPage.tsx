@@ -1,9 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Context } from '..';
 import Form from '../components/Form';
 import { IFormInputs } from '../types';
+
+const bottomNavigation = (
+  <span className="container__signup signup">
+    Already signed up?{' '}
+    <Link className="signup__link" to={'/account/login'}>
+      Log in!
+    </Link>
+  </span>
+);
 
 const RegisterPage = (): JSX.Element => {
   const { store } = React.useContext(Context);
@@ -27,6 +36,7 @@ const RegisterPage = (): JSX.Element => {
       apiErrorMsg={apiErrorMsg}
       onSubmit={onSubmit}
       registerPage
+      bottomNavigation={bottomNavigation}
       isLoading={store.isLoading}
     />
   );
