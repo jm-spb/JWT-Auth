@@ -1,38 +1,30 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Context } from '.';
-import LoginForm from './components/LoginForm';
-import './styles.css';
+import { Routes, Route } from 'react-router-dom';
+import './styles/App.scss';
+import { MainSpinner } from './components/Spinners';
+import RequireAuth from './components/RequireAuth';
 
-function App() {
-  const { store } = React.useContext(Context);
-  React.useEffect(() => {
-    if (localStorage.getItem('token')) {
-      console.log('hi');
-      store.checkAuth();
-    }
-  }, []);
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const RegisterPage = React.lazy(() => import('./pages/RegisterPage'));
 
-  if (store.isLoading) {
-    return <div>Loading...</div>;
-  }
+const App = (): JSX.Element => (
+  <div className="App">
+    <React.Suspense fallback={<MainSpinner />}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route path="/account/login" element={<LoginPage />} />
+        <Route path="/account/register" element={<RegisterPage />} />
+      </Routes>
+    </React.Suspense>
+  </div>
+);
 
-  if (!store.isAuth) {
-    return (
-      <div className="App">
-        <LoginForm />
-      </div>
-    );
-  }
-
-  const handleLogout = () => store.logout();
-
-  return (
-    <div className="App">
-      <h1>{store.isAuth ? `User is auth ${store.user.email}` : 'Unauthorized'}</h1>
-      <button onClick={handleLogout}>Logout</button>
-    </div>
-  );
-}
-
-export default observer(App);
+export default App;
