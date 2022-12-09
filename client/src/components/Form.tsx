@@ -71,7 +71,7 @@ const Form = ({
             placeholder="Enter password"
           />
           <span className="form__togglePassword" onClick={toggleShowPassword}>
-            {isPasswordVisible ? <Eye /> : <EyeOff />}
+            {isPasswordVisible ? <EyeOff /> : <Eye />}
           </span>
         </label>
         {errors?.password ? (
@@ -91,7 +91,7 @@ const Form = ({
                 })}
                 className="form__input"
                 id="passwordConfirm"
-                type="password"
+                type={isPasswordVisible ? 'text' : 'password'}
                 placeholder="Enter password"
               />
             </label>
