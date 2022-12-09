@@ -8,6 +8,7 @@ export default class Store {
   isAuth = false;
   isLoading = false;
   apiError = '';
+  loginError = '';
   registrationError = '';
 
   constructor() {
@@ -26,7 +27,11 @@ export default class Store {
     this.apiError = msg;
   }
 
-  private _setRegistrationError(msg: string) {
+  setLoginError(msg: string) {
+    this.loginError = msg;
+  }
+
+  setRegistrationError(msg: string) {
     this.registrationError = msg;
   }
 
@@ -43,7 +48,7 @@ export default class Store {
       this._setUser(response.data.user);
     } catch (err) {
       const error = err as any;
-      this._setApiError(error.response?.data?.message);
+      this.setLoginError(error.response?.data?.message);
       console.log(error.response?.data?.message);
     }
     finally {
@@ -60,7 +65,7 @@ export default class Store {
       this._setUser(response.data.user);
     } catch (err) {
       const error = err as any;
-      this._setRegistrationError(error.response?.data?.message);
+      this.setRegistrationError(error.response?.data?.message);
       console.log(error.response?.data?.message);
     }
     finally {
