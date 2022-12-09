@@ -1,3 +1,6 @@
+import { RegisterOptions } from 'react-hook-form';
+export type { RegisterOptions };
+
 export interface IUser {
   id: string;
   userEmail: string;
@@ -17,13 +20,15 @@ export interface IFormInputs {
 }
 
 export interface ILocation {
-  state: {path: string};
+  state: { path: string };
 }
 
 export interface IFormProps {
   formName: string;
-  apiErrorMsg: JSX.Element | null;
+  apiErrorMsg: JSX.Element | string;
   onSubmit: ({ email, password }: IFormInputs) => Promise<void>;
-  signUpSuggestion?: JSX.Element;
-  registerPage? : boolean;
+  bottomNavigation: JSX.Element;
+  registerPage?: boolean;
+  passwordValidation?: RegisterOptions;
+  isLoading: boolean;
 }
