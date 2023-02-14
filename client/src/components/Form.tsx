@@ -55,12 +55,14 @@ const Form = ({
             type="email"
             placeholder="Enter email"
           />
+          {/* {errors?.email ? (
+            <span className="form__error">{errors?.email.message}</span>
+          ) : (
+            <span className="form__empty" />
+          )} */}
+          {errors?.email && <span className="form__error">{errors?.email.message}</span>}
         </label>
-        {errors?.email ? (
-          <span className="form__error">{errors?.email.message}</span>
-        ) : (
-          <span className="form__empty" />
-        )}
+
         <label className="form__label" htmlFor="password">
           Password
           <input
@@ -73,12 +75,11 @@ const Form = ({
           <span className="form__togglePassword" onClick={toggleShowPassword}>
             {isPasswordVisible ? <EyeOff /> : <Eye />}
           </span>
+          {errors?.password && (
+            <span className="form__error">{errors?.password.message}</span>
+          )}
         </label>
-        {errors?.password ? (
-          <span className="form__error">{errors?.password.message}</span>
-        ) : (
-          <span className="form__empty" />
-        )}
+
         {registerPage ? (
           <>
             <label className="form__label" htmlFor="passwordConfirm">
@@ -94,12 +95,10 @@ const Form = ({
                 type={isPasswordVisible ? 'text' : 'password'}
                 placeholder="Enter password"
               />
+              {errors?.passwordConfirm && (
+                <span className="form__error">{errors?.passwordConfirm.message}</span>
+              )}
             </label>
-            {errors?.passwordConfirm ? (
-              <span className="form__error">{errors?.passwordConfirm.message}</span>
-            ) : (
-              <span className="form__empty" />
-            )}
           </>
         ) : null}
         <button
