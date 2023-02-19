@@ -1,0 +1,34 @@
+@import './config';
+
+.home {
+  max-width: 720px;
+  background-color: rgba($color: $main-color, $alpha: 0.9);
+  border-radius: 5px;
+  padding: 20px;
+  display: grid;
+  gap: 24px;
+
+  &__top {
+    border-bottom: 1px solid $secondary-color;
+  }
+
+  &__heading {
+    max-width: 680px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    color: rgba($color: white, $alpha: 0.7);
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__content {
+    background-color: antiquewhite;
+  }
+
+  &__fetch-btn {
+    width: 160px;
+  }
+}
