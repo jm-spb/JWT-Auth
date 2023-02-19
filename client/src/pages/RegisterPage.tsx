@@ -7,17 +7,6 @@ import { IFormInputs, RegisterOptions } from '../types';
 
 // Validate password only on Register Page
 const passwordValidation: RegisterOptions = {
-  required: 'Password field is empty',
-  /* Password should contain at least: 
-    - 1 digit
-    - 1 small-case letter
-    - 1 capital letter
-    - 1 special character
-    - length: 6-10 characters
-    - order not important
-    1A2a$5              
-    */
-
   minLength: {
     value: 6,
     message: 'Password length should be more than 5 characters',
@@ -64,9 +53,7 @@ const RegisterPage = (): JSX.Element => {
 
   const apiErrorMsg = store.registrationError ? (
     <div className="container__api-error">{store.registrationError}</div>
-  ) : (
-    ''
-  );
+  ) : null;
 
   return (
     <Form
