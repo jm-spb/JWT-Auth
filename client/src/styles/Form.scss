@@ -157,8 +157,7 @@
     }
   }
 
-  &__btn {
-    cursor: pointer;
+  &__paste {
     margin-left: 4px;
     padding: 4px;
     border: none;
@@ -168,6 +167,7 @@
     font-weight: 600;
     position: relative;
     transition: all 0.2s ease-in-out;
+    cursor: pointer;
 
     &:hover {
       background-color: rgba($color: $secondary-color, $alpha: 0.7);
