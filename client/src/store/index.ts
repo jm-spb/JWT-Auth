@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { makeAutoObservable } from 'mobx';
 import AuthService from '../services/AuthService';
+import UserService from '../services/UserService';
 import { IAuthResponse, IUser } from '../types';
 
 export default class Store {
   user = {} as IUser;
   isAuth = false;
   isLoading = false;
+  isLoadingUsersData = false;
   apiError = '';
   loginError = '';
   registrationError = '';
@@ -37,6 +39,10 @@ export default class Store {
 
   setIsLoading(bool: boolean) {
     this.isLoading = bool;
+  }
+
+  setIsLoadingUsersData(bool: boolean) {
+    this.isLoadingUsersData = bool;
   }
 
   async login(email: string, password: string) {
@@ -105,12 +111,18 @@ export default class Store {
     }
   }
 
-  async fetchUSers() {
+  async fetchUsers() {
+    this.setIsLoadingUsersData(true);
     try {
+      const response = await UserService.fetchAllUsers();
+      return response.data
     } catch (err) {
       const error = err as any;
       this._setApiError(error.response?.data?.message);
       console.log(error.response.data.message);
+    }
+    finally {
+      this.setIsLoadingUsersData(false);
     }
   }
 }
