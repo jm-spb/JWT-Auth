@@ -5,17 +5,26 @@ $warning-color: #ff9494;
 $link-color: #00ffff;
 
 .btn {
-  display: block;
   appearance: none;
-  border: 1px solid #333;
-  padding: 16px;
+  transition: all 0.4s ease;
+  border: 1px solid $secondary-color;
   border-radius: 4px;
   cursor: pointer;
+}
 
-  &__content {
+@mixin btn-main {
+  background-color: $secondary-color;
+  color: white;
+
+  > div {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
   }
+}
+
+@mixin btn-outline {
+  background-color: white;
+  color: $secondary-color;
 }
