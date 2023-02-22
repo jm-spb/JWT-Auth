@@ -36,7 +36,6 @@
 
   &__label {
     min-height: 96px;
-    max-height: fit-content;
     line-height: 2;
     text-align: left;
     display: block;
@@ -88,12 +87,11 @@
   }
 
   &__submit {
+    @include btn-main;
     margin: 30px auto 0 auto;
     width: 100%;
-    background: $secondary-color;
-    color: white;
+    padding: 16px;
     text-transform: uppercase;
-    border: none;
     font-size: 16px;
     font-weight: 400;
     letter-spacing: 4px;
@@ -158,16 +156,12 @@
   }
 
   &__paste {
+    @include btn-main;
+    position: relative;
     margin-left: 4px;
     padding: 4px;
-    border: none;
-    border-radius: 4px;
-    background-color: $secondary-color;
     color: white;
     font-weight: 600;
-    position: relative;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
 
     &:hover {
       background-color: rgba($color: $secondary-color, $alpha: 0.7);
