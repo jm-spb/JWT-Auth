@@ -1,0 +1,15 @@
+@import './config';
+
+.messageBox {
+  max-width: 720px;
+  background-color: rgba($color: $main-color, $alpha: 0.9);
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+
+  &__content {
+    font-size: 24px;
+    color: white;
+    line-height: 2;
+  }
+}
