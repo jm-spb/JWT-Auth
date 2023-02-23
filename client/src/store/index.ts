@@ -5,9 +5,13 @@ import UserService from '../services/UserService';
 import { IAuthResponse, IUser } from '../types';
 
 export default class Store {
-  user = {} as IUser;
+  user: IUser = {
+    id: '',
+    userEmail: '',
+    isActivated: false,
+  };
   isAuth = false;
-  isLoading = false;
+  isLoading = true;
   isLoadingUsersData = false;
   apiError = '';
   loginError = '';
@@ -56,8 +60,7 @@ export default class Store {
       const error = err as any;
       this.setLoginError(error.response?.data?.message);
       console.log(error.response?.data?.message);
-    }
-    finally {
+    } finally {
       this.setIsLoading(false);
     }
   }
@@ -65,7 +68,7 @@ export default class Store {
   async registration(email: string, password: string) {
     this.setIsLoading(true);
     try {
-      const response = await AuthService.registration(email, password);      
+      const response = await AuthService.registration(email, password);
       localStorage.setItem('token', response.data.accessToken);
       this._setAuth(true);
       this._setUser(response.data.user);
@@ -73,8 +76,7 @@ export default class Store {
       const error = err as any;
       this.setRegistrationError(error.response?.data?.message);
       console.log(error.response?.data?.message);
-    }
-    finally {
+    } finally {
       this.setIsLoading(false);
     }
   }
@@ -115,13 +117,12 @@ export default class Store {
     this.setIsLoadingUsersData(true);
     try {
       const response = await UserService.fetchAllUsers();
-      return response.data
+      return response.data;
     } catch (err) {
       const error = err as any;
       this._setApiError(error.response?.data?.message);
       console.log(error.response.data.message);
-    }
-    finally {
+    } finally {
       this.setIsLoadingUsersData(false);
     }
   }

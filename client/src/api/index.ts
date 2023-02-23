@@ -24,14 +24,14 @@ api.interceptors.response.use(
           { withCredentials: true }
         );
         // prevRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
-        localStorage.setItem('token', response.data.accessToken)
+        localStorage.setItem('token', response.data.accessToken);
         return api.request(prevRequest);
       } catch (error) {
-        console.log('NE AVTORIZOVAN');
+        console.log('Unauthorized');
       }
     }
 
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
 );
 

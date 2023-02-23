@@ -121,10 +121,10 @@ const Form = ({
             type="submit"
             disabled={!isValid || isLoading}
           >
-            <span className="btn__content">
+            <div>
               <span>{formName}</span>
               {isLoading ? <ButtonSpinner /> : null}
-            </span>
+            </div>
           </button>
         </form>
         {bottomNavigation}
@@ -155,7 +155,7 @@ const Form = ({
           </li>
           <li>
             To meet all password requirements, you can use this example:{' '}
-            <button className="notes__btn" onClick={handlePasswordCopy}>
+            <button className="btn notes__paste" onClick={handlePasswordCopy}>
               Click to paste
             </button>
           </li>
