@@ -102,7 +102,6 @@ const fetchAllUsers = async () => {
   const response = await userModel.aggregate([
     { $group: { _id: '$_id', userEmail: { $first: '$email' } } },
   ]);
-  console.log(response);
   return response;
 };
 

@@ -10,13 +10,12 @@ module.exports = function (req, res, next) {
     }
 
     const accessToken = authHeader.split(' ')[1];
-    console.log(accessToken);
     if (!accessToken) {
       return next(ApiError.UnauthorizedError());
     }
 
     const userData = tokenService.validateAccessToken(accessToken);
-    console.log(userData);
+
     if (!userData) {
       return next(ApiError.UnauthorizedError());
     }
