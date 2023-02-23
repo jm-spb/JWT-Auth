@@ -38,6 +38,8 @@ const RegisterPage = (): JSX.Element => {
 
   // Clear RegistrationErrorMessage when leave RegistrationPage
   React.useEffect(() => {
+    store.setIsLoading(false);
+
     return () => {
       store.setRegistrationError('');
     };
@@ -45,9 +47,9 @@ const RegisterPage = (): JSX.Element => {
 
   const onSubmit = async ({ email, password }: IFormInputs) => {
     await store.registration(email, password);
-    // if no errors on registration -> redirect to LoginPage
+    // if no errors on registration -> redirect to Activation Message Page
     if (!store.registrationError) {
-      navigate('/account/login');
+      navigate('/account/activation-message');
     }
   };
 

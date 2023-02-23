@@ -21,6 +21,8 @@ const LoginPage = (): JSX.Element => {
 
   // Clear LoginErrorMessage when leave LoginPage
   React.useEffect(() => {
+    store.setIsLoading(false);
+
     return () => {
       store.setLoginError('');
     };
@@ -35,9 +37,7 @@ const LoginPage = (): JSX.Element => {
 
   const apiErrorMsg = store.loginError ? (
     <div className="container__api-error">{store.loginError}</div>
-  ) : (
-    ''
-  );
+  ) : null;
 
   return (
     <Form
