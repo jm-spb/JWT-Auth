@@ -18,6 +18,7 @@ const saveToken = async (userId, refreshToken) => {
   const tokenData = await tokenModel.findOne({ user: userId });
   if (tokenData) {
     tokenData.refreshToken = refreshToken;
+    tokenData.updatedAt = new Date();
     return tokenData.save();
   }
   const token = await tokenModel.create({ user: userId, refreshToken });
