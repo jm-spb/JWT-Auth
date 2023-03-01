@@ -7,14 +7,22 @@ const TokenSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 /* 
-! For testing purposes time to delete token from DB is set to 240sec
+! For testing purposes time to delete token from DB is set to 60sec
 * in order to change "expireAfterSeconds" in prod also need: 
 * https://stackoverflow.com/questions/64830437/document-not-expiring-in-mongodb-using-mongoose
 * + delete/rename collection in DB
 */
-TokenSchema.index({ createdAt: 1 }, { expireAfterSeconds: 240 });
+
+/* if the user has not been logged in for 60 seconds (the refresh token has not been updated), then delete that token instance from the DB.
+This reduces the size of tokens collection in the DB (if the user has not been logged in for a while).
+*/
+TokenSchema.index({ updatedAt: 1 }, { expireAfterSeconds: 60 });
 
 module.exports = model('Token', TokenSchema);
