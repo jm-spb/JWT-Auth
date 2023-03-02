@@ -25,7 +25,7 @@ export interface ILocation {
 
 export interface IFormProps {
   formName: string;
-  apiErrorMsg: JSX.Element | string;
+  apiErrorMsg: JSX.Element | null;
   onSubmit: ({ email, password }: IFormInputs) => Promise<void>;
   bottomNavigation: JSX.Element;
   registerPage?: boolean;
